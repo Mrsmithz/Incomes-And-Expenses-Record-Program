@@ -1,2 +1,3 @@
 # Records-of-incomes-and-expenses
-#Test Commit
+# require GTK+ ver 3 and over to run this proejct
+# install GTK+ via vcpkg
