@@ -1,0 +1,14 @@
+﻿  test.c
+e:\coding\project3\project1\test.c(33): warning C4133: 'function': incompatible types - from 'GtkWindow *' to 'GtkContainer *'
+e:\coding\project3\project1\test.c(107): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(108): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(115): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(119): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(120): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(123): warning C4133: 'function': incompatible types - from 'GtkTreeView *' to 'GtkWidget *'
+  Generating code
+  3 of 5 functions (60.0%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Project1.vcxproj -> E:\Coding\Project3\Project1\x64\Release\Project1.exe
