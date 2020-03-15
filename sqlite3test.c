@@ -13,7 +13,7 @@ int main11() {
 	if (rc == SQLITE_OK) {
 		printf("SQLITE3 OPEN PASSED\n");
 	}
-	char *sql = "SELECT * FROM Students";
+	char *sql = "SELECT * FROM \"15/03/2020\"";
 				
 	rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
 
@@ -22,7 +22,7 @@ int main11() {
 	}
 	return 0;
 }
-int callback(void *notused, int argc, char**argv, char **column) {
+int callback11(void *notused, int argc, char**argv, char **column) {
 	notused = 0;
 	
 	for (int i = 0; i < argc; i++) {
