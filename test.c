@@ -35,6 +35,7 @@ int get_data_from_sql();
 int callback(void *notused, int argc, char**argv, char**colname);
 char callback2(void *notused, int argc, char**argv, char**colname);
 char get_data_from_tree_view();
+int delete_row();
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv);
 
@@ -158,6 +159,7 @@ static void load_ui(void) {
 	delete_btn = gtk_button_new_with_label("Delete");
 	gtk_widget_set_size_request(GTK_BUTTON(delete_btn), 100, 50);
 	gtk_layout_put(GTK_LAYOUT(layout), delete_btn, 425, 517);
+	g_signal_connect(delete_btn, "clicked", G_CALLBACK(delete_row), NULL);
 
 	sum_btn = gtk_button_new_with_label("Summary");
 	gtk_widget_set_size_request(GTK_BUTTON(sum_btn), 100, 50);
@@ -302,5 +304,36 @@ char get_data_from_tree_view() {
 char callback2(void *notused, int argc, char**argv, char**colname) {
 	notused = 0;
 	snprintf(test, sizeof(test), "%s", argv[0]);
+	return 0;
+}
+int delete_row() {
+	GtkTreeSelection *select;
+	char *note_select = NULL, *income_select = NULL, *expense_select = NULL, *summary_select = NULL;
+	select = gtk_tree_view_get_selection(treeview);
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_BROWSE);
+	if (gtk_tree_selection_get_selected(select, &model, &toplevel)) {
+		gtk_tree_model_get(model, &toplevel, 1, &note_select, 2, &income_select, 3, &expense_select, 4, &summary_select, -1);
+		printf("%s %s %s %s\n", note_select, income_select, expense_select, summary_select);
+	}
+
+	unsigned int day, month, year;
+	char date_format[200];
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?;", day, month + 1, year);
+
+	int rc = sqlite3_open("test.db", &db);
+	char *sql = &date_format;
+	printf("%s\n", sql);
+
+	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
+
+	sqlite3_bind_text(statement, 1, note_select, -1, 0);
+	sqlite3_bind_text(statement, 2, income_select, -1, 0);
+	sqlite3_bind_text(statement, 3, expense_select, -1, 0);
+	sqlite3_bind_text(statement, 4, summary_select, -1, 0);
+
+	int step = sqlite3_step(statement);
+	get_data_from_sql();
+
 	return 0;
 }

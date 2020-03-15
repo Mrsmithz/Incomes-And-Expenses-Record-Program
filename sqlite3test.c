@@ -4,7 +4,7 @@
 
 int callback(void *notused, int argc, char**argv, char **column);
 
-int main11() {
+int main123123() {
 	sqlite3 *db;
 	sqlite3_stmt *res;
 	char *err_msg = 0;
@@ -13,7 +13,7 @@ int main11() {
 	if (rc == SQLITE_OK) {
 		printf("SQLITE3 OPEN PASSED\n");
 	}
-	char *sql = "SELECT * FROM \"15/03/2020\"";
+	char *sql = "SELECT * FROM \"15/03/2020\" WHERE rowid='2'";
 				
 	rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
 
