@@ -10,7 +10,10 @@ GtkTreeIter toplevel, child;
 GtkWidget *income, *expense, *submit_btn, *delete_btn, *sum_btn, *calendar, *note;
 GtkWidget *window, *layout, *treeview, *scroll;
 GtkTreeModel *model;
-
+GtkTreeViewColumn *col1, *col2, *col3, *col4, *col5;
+GtkCellRenderer *cell1, *cell2, *cell3, *cell4, *cell5;
+int count = 0;
+char test[100];
 enum
 {
 	dates = 0,
@@ -30,7 +33,8 @@ static void create_sql(void);
 static void add_data_to_sql(void);
 int get_data_from_sql();
 int callback(void *notused, int argc, char**argv, char**colname);
-
+char callback2(void *notused, int argc, char**argv, char**colname);
+char get_data_from_tree_view();
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv);
 
@@ -41,6 +45,7 @@ int main(int argc, char**argv) {
 	layout = gtk_layout_new(NULL, NULL);
 	load_ui();
 	gtk_container_add(GTK_WINDOW(window), layout);
+	get_data_from_sql();
 	gtk_widget_show_all(window);
 	gtk_main();
 	return 0;
@@ -58,9 +63,6 @@ static GtkTreeModel *create_model(void) {
 	return GTK_TREE_MODEL(treestore);
 }
 static GtkWidget *create_tree_view(void) {
-	GtkTreeViewColumn *col1, *col2, *col3, *col4, *col5;
-	GtkCellRenderer *cell1, *cell2, *cell3, *cell4, *cell5;
-	GtkWidget *treeview;
 
 	treeview = gtk_tree_view_new();
 
@@ -161,10 +163,12 @@ static void load_ui(void) {
 	gtk_widget_set_size_request(GTK_BUTTON(sum_btn), 100, 50);
 	gtk_layout_put(GTK_LAYOUT(layout), sum_btn, 530, 517);
 	g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_data_from_sql), NULL);
+	//g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_data_from_tree_view), NULL);
 
 	calendar = gtk_calendar_new();
 	gtk_widget_set_size_request(GTK_CALENDAR(calendar), 200, 100);
 	gtk_layout_put(GTK_LAYOUT(layout), GTK_CALENDAR(calendar), 10, 315);
+	g_signal_connect(calendar, "day-selected", G_CALLBACK(create_sql), NULL);
 	
 	scroll = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(GTK_SCROLLED_WINDOW(scroll), 780, 300);
@@ -180,7 +184,7 @@ static void load_css(void) {
 	gtk_css_provider_load_from_path(css, "theme.css", NULL);
 	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),GTK_STYLE_PROVIDER(css),GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
-static void add_data(void) {
+/*static void add_data(void) {
 	char a[100], b[100], c[100], d[100], result[100], date_format[100];
 	unsigned int day, month, year;
 	double income_value, expense_value;
@@ -194,27 +198,31 @@ static void add_data(void) {
 	snprintf(date_format, sizeof(date_format), "%02d/%02d/%04d", day, month+1, year);
 	gtk_tree_store_append(treestore, &toplevel, NULL);
 	gtk_tree_store_set(treestore, &toplevel, dates, date_format, notes, b, incomes, c, expenses, d, summary, result, -1);
-	create_sql();
-}
+	//create_sql();
+}*/
 sqlite3 *db;
 sqlite3_stmt *statement;
 char *err_msg = 0;
 
 static void create_sql(void) {
 	unsigned int day, month, year;
-	char date_format[200];
+	char date_format[200], check[200], check2[100];
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "CREATE TABLE IF NOT EXISTS \"%02d/%02d/%04d\" (notes TEXT, incomes TEXT, expenses TEXT, result TEXT);", day, month + 1, year);
-	
+	snprintf(check, sizeof(check), "SELECT name FROM sqlite_master WHERE type='table' AND name=\"%02d/%02d/%04d\"", day, month + 1, year);
+	snprintf(check2, sizeof(check2), "%02d/%02d/%04d", day, month + 1, year);
 	int rc = sqlite3_open("test.db", &db);
 	char *sql = &date_format;
-	printf("%s", sql);
-	rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-	if (rc == SQLITE_OK) {
-		printf("%s", sql);
+	char *sql2 = &check;
+	rc = sqlite3_exec(db, sql2, callback2, 0, &err_msg);
+	printf("%s\n%s\n", test, check2);
+	if (strcmp(test, check2)) {
+		rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+		get_data_from_sql();
 	}
-	sqlite3_finalize(statement);
-	sqlite3_close(db);
+	else {
+		get_data_from_sql();
+	}
 }
 static void add_data_to_sql(void) {
 	unsigned int day, month, year;
@@ -242,11 +250,10 @@ static void add_data_to_sql(void) {
 	
 	printf("%s", sql);
 	int step = sqlite3_step(statement);
-	sqlite3_finalize(statement);
-	sqlite3_close(db);
+	get_data_from_sql();
 }
 int get_data_from_sql() {
-	
+	gtk_tree_store_clear(treestore);
 	unsigned int day, month, year;
 	char date_format[200];
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
@@ -259,11 +266,41 @@ int get_data_from_sql() {
 	rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
 }
 int callback(void *notused, int argc, char **argv, char **colname) {
+	unsigned int day, month, year;
+	char date_format[200];
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	snprintf(date_format, sizeof(date_format), "%02d/%02d/%04d", day, month + 1, year);
+	
 	notused = 0;
+
+	//char buffer[200];
+	//snprintf(buffer, sizeof(buffer), "%s%s%s%s", argv[0], argv[1], argv[2], argv[3]);
+	//printf("%s\n", buffer);
 	gtk_tree_store_append(treestore, &toplevel, NULL);
+	gtk_tree_store_set(treestore, &toplevel, 0, date_format, -1);
+	
 	for (int i = 0; i < argc; i++) {
 		gtk_tree_store_set(treestore, &toplevel, i+1, argv[i], -1);
 	}
-	printf("\n");
+	return 0;
+}
+char get_data_from_tree_view() {
+	GtkTreeIter iter;
+	GtkTreePath *path;
+	char *str = NULL, *str2 = NULL, *str3 = NULL, *str4 = NULL;
+	char buffer[200];
+	path = gtk_tree_model_get_path(model, &toplevel);
+	if (gtk_tree_model_get_iter(model, &iter, path)) {
+		//gtk_tree_model_iter_previous(model, &iter);
+		gtk_tree_model_get(model, &iter, 1, &str, 2, &str2, 3, &str3, 4, &str4, -1);
+		printf("%s %s %s %s\n", str, str2, str3, str4);
+	}
+	snprintf(buffer, sizeof(buffer), "%s%s%s%s", str, str2, str3, str4);
+	printf("%s", buffer);
+	return buffer;
+}
+char callback2(void *notused, int argc, char**argv, char**colname) {
+	notused = 0;
+	snprintf(test, sizeof(test), "%s", argv[0]);
 	return 0;
 }
