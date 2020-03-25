@@ -319,8 +319,8 @@ int delete_row() {
 	unsigned int day, month, year;
 	char date_format[200];
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
-	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?;", day, month + 1, year);
-
+	//snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?;", day, month + 1, year);
+	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE rowid in (select min(rowid) from \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?);", day, month + 1, year, day, month+1, year);
 	int rc = sqlite3_open("test.db", &db);
 	char *sql = &date_format;
 	printf("%s\n", sql);

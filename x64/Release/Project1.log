@@ -24,8 +24,8 @@ e:\coding\project3\project1\test.c(302): warning C4047: 'return': 'char' differs
 e:\coding\project3\project1\test.c(312): warning C4133: 'function': incompatible types - from 'GtkWidget *' to 'GtkTreeView *'
 e:\coding\project3\project1\test.c(325): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
   Generating code
-  0 of 16 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 16 functions ( 6.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Project1.vcxproj -> E:\Coding\Project3\Project1\x64\Release\Project1.exe
