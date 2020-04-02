@@ -1,30 +1,37 @@
 ﻿  test.c
-e:\coding\project3\project1\test.c(48): warning C4133: 'function': incompatible types - from 'GtkWindow *' to 'GtkContainer *'
-e:\coding\project3\project1\test.c(130): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(131): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(132): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(142): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(143): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(144): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(155): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(160): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(165): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(171): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(172): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(176): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(180): warning C4133: 'function': incompatible types - from 'GtkTreeView *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(181): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkContainer *'
-e:\coding\project3\project1\test.c(219): warning C4133: 'function': incompatible types - from 'char (__cdecl *)(void *,int,char **,char **)' to 'int (__cdecl *)(void *,int,char **,char **)'
-e:\coding\project3\project1\test.c(217): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(218): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(245): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(235): warning C4101: 'a': unreferenced local variable
-e:\coding\project3\project1\test.c(266): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(302): warning C4047: 'return': 'char' differs in levels of indirection from 'char [200]'
-e:\coding\project3\project1\test.c(312): warning C4133: 'function': incompatible types - from 'GtkWidget *' to 'GtkTreeView *'
-e:\coding\project3\project1\test.c(325): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(56): warning C4133: 'function': incompatible types - from 'GtkWindow *' to 'GtkContainer *'
+e:\coding\project3\project1\test.c(138): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(139): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(140): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(150): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(151): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(152): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(163): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(168): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(173): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(179): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(180): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(184): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(188): warning C4133: 'function': incompatible types - from 'GtkTreeView *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(189): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkContainer *'
+e:\coding\project3\project1\test.c(227): warning C4133: 'function': incompatible types - from 'char (__cdecl *)(void *,int,char **,char **)' to 'int (__cdecl *)(void *,int,char **,char **)'
+e:\coding\project3\project1\test.c(225): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(226): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(261): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(242): warning C4101: 'a': unreferenced local variable
+e:\coding\project3\project1\test.c(282): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(318): warning C4047: 'return': 'char' differs in levels of indirection from 'char [200]'
+e:\coding\project3\project1\test.c(328): warning C4133: 'function': incompatible types - from 'GtkWidget *' to 'GtkTreeView *'
+e:\coding\project3\project1\test.c(341): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(364): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(394): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(414): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
+e:\coding\project3\project1\test.c(424): warning C4133: 'function': incompatible types - from 'GtkDialog *' to 'GtkWidget *'
+e:\coding\project3\project1\test.c(419): warning C4101: 'action': unreferenced local variable
   Generating code
-  1 of 16 functions ( 6.3%) were compiled, the rest were copied from previous compilation.
+e:\coding\project3\project1\test.c(430): warning C4716: 'pop_up': must return a value
+e:\coding\project3\project1\test.c(272): warning C4715: 'add_data_to_sql': not all control paths return a value
+  3 of 21 functions (14.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

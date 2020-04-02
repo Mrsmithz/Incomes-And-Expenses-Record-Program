@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <Windows.h>
 
 GtkTreeStore *treestore;
 GtkTreeIter toplevel, child;
@@ -14,6 +15,7 @@ GtkTreeViewColumn *col1, *col2, *col3, *col4, *col5;
 GtkCellRenderer *cell1, *cell2, *cell3, *cell4, *cell5;
 int count = 0;
 char test[100];
+double summaryall = 0;
 enum
 {
 	dates = 0,
@@ -30,15 +32,21 @@ static void load_ui(void);
 static void load_css(void);
 static void add_data(void);
 static void create_sql(void);
-static void add_data_to_sql(void);
+int add_data_to_sql(void);
 int get_data_from_sql();
 int callback(void *notused, int argc, char**argv, char**colname);
 char callback2(void *notused, int argc, char**argv, char**colname);
 char get_data_from_tree_view();
 int delete_row();
+int hideconsole();
+int get_sum_from_sql();
+int callback3(void *notused, int argc, char**argv, char**colname);
+int add_sum_to_sql();
+void delete_summary_from_sql();
+int pop_up();
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv);
-
+	//hideconsole();
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -164,7 +172,7 @@ static void load_ui(void) {
 	sum_btn = gtk_button_new_with_label("Summary");
 	gtk_widget_set_size_request(GTK_BUTTON(sum_btn), 100, 50);
 	gtk_layout_put(GTK_LAYOUT(layout), sum_btn, 530, 517);
-	g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_data_from_sql), NULL);
+	g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_sum_from_sql), NULL);
 	//g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_data_from_tree_view), NULL);
 
 	calendar = gtk_calendar_new();
@@ -226,14 +234,22 @@ static void create_sql(void) {
 		get_data_from_sql();
 	}
 }
-static void add_data_to_sql(void) {
+int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "INSERT INTO \"%02d/%02d/%04d\" VALUES (?, ?, ?, ?);", day, month + 1, year);
-	
 	char a[100], b[100], c[100], d[100], result[100];
 	double income_value, expense_value;
+	
+	if (atof((char *)gtk_entry_get_text(GTK_ENTRY(income))) && atof((char *)gtk_entry_get_text(GTK_ENTRY(expense)))) {
+		printf("Passed");
+	}
+	else {
+		pop_up();
+		return 0;
+	}
+	
 	snprintf(b, sizeof(b), "%s", gtk_entry_get_text(GTK_ENTRY(note)));
 	income_value = atof((char *)gtk_entry_get_text(GTK_ENTRY(income)));
 	expense_value = atof((char *)gtk_entry_get_text(GTK_ENTRY(expense)));
@@ -336,4 +352,84 @@ int delete_row() {
 	get_data_from_sql();
 
 	return 0;
+}
+int get_sum_from_sql() {
+	unsigned int day, month, year;
+	char date_format[200];
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	snprintf(date_format, sizeof(date_format), "SELECT incomes, expenses FROM \"%02d/%02d/%04d\" where notes!='Summary'", day, month + 1, year);
+
+	int rc = sqlite3_open("test.db", &db);
+
+	char *sql = &date_format;
+
+	rc = sqlite3_exec(db, sql, callback3, 0, &err_msg);
+	add_sum_to_sql();
+}
+int callback3(void*notused, int argc, char**argv, char**colname){
+	notused = 0;
+	for (int i = 0; i < argc; i++) {
+		if (!strcmp(colname[i], "incomes")) {
+			summaryall += atof(argv[i]);
+		}
+		else {
+			summaryall -= atof(argv[i]);
+		}
+	}
+	return 0;
+}
+int add_sum_to_sql() {
+	delete_summary_from_sql();
+	unsigned int day, month, year;
+	char date_format[200];
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	snprintf(date_format, sizeof(date_format), "INSERT INTO \"%02d/%02d/%04d\" VALUES (?, ?, ?, ?);", day, month + 1, year);
+	char a[100], b[100], c[100], d[100];
+	snprintf(a, sizeof(a), "%.2lf", summaryall);
+	snprintf(b, sizeof(b), "%s", "Summary");
+	snprintf(c, sizeof(c), "%s", "-");
+	snprintf(d, sizeof(d), "%s", "-");
+
+	int rc = sqlite3_open("test.db", &db);
+	char *sql = &date_format;
+	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
+
+	sqlite3_bind_text(statement, 1, b, -1, 0);
+	sqlite3_bind_text(statement, 2, c, -1, 0);
+	sqlite3_bind_text(statement, 3, d, -1, 0);
+	sqlite3_bind_text(statement, 4, a, -1, 0);
+
+	printf("%s", sql);
+	int step = sqlite3_step(statement);
+	summaryall = 0;
+	get_data_from_sql();
+}
+void delete_summary_from_sql() {
+	unsigned int day, month, year;
+	char date_format[200];
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes='Summary'", day, month+1, year);
+	printf("%s", date_format);
+	int rc = sqlite3_open("test.db", &db);
+	char *sql = &date_format;
+	rc = sqlite3_exec(db, sql, NULL, 0, &err_msg);
+
+}
+int pop_up() {
+	GtkWidget *popup, *dialog_label, *action;
+	GtkDialogFlags flags = GTK_DIALOG_MODAL;
+	dialog_label = gtk_label_new("ONLY NUMBER IN INCOMES AND EXPENSES \n\t\t\tIS ALLOWED");
+	popup = gtk_dialog_new_with_buttons("ERROR!!", GTK_WINDOW(window), flags, "OK", GTK_RESPONSE_OK, NULL);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(popup))), dialog_label, TRUE, TRUE, 0);
+	gtk_widget_set_size_request(GTK_DIALOG(popup), 200, 200);
+	gtk_widget_show_all(popup);
+	gint response = gtk_dialog_run(GTK_DIALOG(popup));
+	if (response == GTK_RESPONSE_OK) {
+		gtk_widget_destroy(popup);
+	}
+}
+int hideconsole(){
+	HWND hwnd = GetConsoleWindow();
+	//ShowWindow(hwnd, SW_MINIMIZE);
+	ShowWindow(hwnd, SW_HIDE);
 }
