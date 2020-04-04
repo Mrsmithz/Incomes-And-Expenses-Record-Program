@@ -13,6 +13,7 @@ GtkWidget *window, *layout, *treeview, *scroll;
 GtkTreeModel *model;
 GtkTreeViewColumn *col1, *col2, *col3, *col4, *col5;
 GtkCellRenderer *cell1, *cell2, *cell3, *cell4, *cell5;
+GdkPixbuf *icon;
 int count = 0;
 char test[100];
 double summaryall = 0;
@@ -32,6 +33,7 @@ static void load_ui(void);
 static void load_css(void);
 static void add_data(void);
 static void create_sql(void);
+GdkPixbuf *create_pixbuf(const gchar * filename);
 int add_data_to_sql(void);
 int get_data_from_sql();
 int callback(void *notused, int argc, char**argv, char**colname);
@@ -46,11 +48,15 @@ void delete_summary_from_sql();
 int pop_up();
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv);
-	//hideconsole();
+	hideconsole();
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
+	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+	gtk_window_set_title(GTK_WINDOW(window), "INCOMES AND EXPENSES RECORDS");
+	icon = create_pixbuf("share/icon/Emo01.png");
+	gtk_window_set_icon(GTK_WINDOW(window), icon);
 	layout = gtk_layout_new(NULL, NULL);
 	load_ui();
 	gtk_container_add(GTK_WINDOW(window), layout);
@@ -239,15 +245,24 @@ int add_data_to_sql(void) {
 	char date_format[200];
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "INSERT INTO \"%02d/%02d/%04d\" VALUES (?, ?, ?, ?);", day, month + 1, year);
-	char a[100], b[100], c[100], d[100], result[100];
+	char a[100], b[100], c[100], d[100], result[100], check1[100], check2[100];
 	double income_value, expense_value;
-	
-	if (atof((char *)gtk_entry_get_text(GTK_ENTRY(income))) && atof((char *)gtk_entry_get_text(GTK_ENTRY(expense)))) {
-		printf("Passed");
+	int len1 = 1, len2 = 1;
+	snprintf(check1, sizeof(check1), "%s", gtk_entry_get_text(GTK_ENTRY(income)));
+	snprintf(check2, sizeof(check2), "%s", gtk_entry_get_text(GTK_ENTRY(expense)));
+
+	for (int i = 0; i < strlen(check1); i++) {
+		len1 *= isdigit(check1[i]);
 	}
-	else {
+	for (int j = 0; j < strlen(check2); j++) {
+		len2 *= isdigit(check2[j]);
+	}
+	if (!(len1 * len2)) {
 		pop_up();
 		return 0;
+	}
+	else {
+		printf("Passed\n");
 	}
 	
 	snprintf(b, sizeof(b), "%s", gtk_entry_get_text(GTK_ENTRY(note)));
@@ -268,7 +283,10 @@ int add_data_to_sql(void) {
 	
 	printf("%s", sql);
 	int step = sqlite3_step(statement);
-	get_data_from_sql();
+	get_sum_from_sql();
+	gtk_entry_set_text(GTK_ENTRY(note), "");
+	gtk_entry_set_text(GTK_ENTRY(income), "");
+	gtk_entry_set_text(GTK_ENTRY(expense), "");
 }
 int get_data_from_sql() {
 	gtk_tree_store_clear(treestore);
@@ -349,7 +367,8 @@ int delete_row() {
 	sqlite3_bind_text(statement, 4, summary_select, -1, 0);
 
 	int step = sqlite3_step(statement);
-	get_data_from_sql();
+	get_sum_from_sql();
+	//get_data_from_sql();
 
 	return 0;
 }
@@ -427,6 +446,15 @@ int pop_up() {
 	if (response == GTK_RESPONSE_OK) {
 		gtk_widget_destroy(popup);
 	}
+}
+GdkPixbuf *create_pixbuf(const gchar *filename) {
+	GdkPixbuf *pixbuf;
+	GError *error = NULL;
+	pixbuf = gdk_pixbuf_new_from_file(filename, &error);
+	if (!pixbuf) {
+		printf("can't load icon\n");
+	}
+	return pixbuf;
 }
 int hideconsole(){
 	HWND hwnd = GetConsoleWindow();

@@ -1,38 +1,6 @@
-﻿  test.c
-e:\coding\project3\project1\test.c(56): warning C4133: 'function': incompatible types - from 'GtkWindow *' to 'GtkContainer *'
-e:\coding\project3\project1\test.c(138): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(139): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(140): warning C4133: 'function': incompatible types - from 'GtkLabel *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(150): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(151): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(152): warning C4133: 'function': incompatible types - from 'GtkEntry *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(163): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(168): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(173): warning C4133: 'function': incompatible types - from 'GtkButton *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(179): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(180): warning C4133: 'function': incompatible types - from 'GtkCalendar *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(184): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(188): warning C4133: 'function': incompatible types - from 'GtkTreeView *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(189): warning C4133: 'function': incompatible types - from 'GtkScrolledWindow *' to 'GtkContainer *'
-e:\coding\project3\project1\test.c(227): warning C4133: 'function': incompatible types - from 'char (__cdecl *)(void *,int,char **,char **)' to 'int (__cdecl *)(void *,int,char **,char **)'
-e:\coding\project3\project1\test.c(225): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(226): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(261): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(242): warning C4101: 'a': unreferenced local variable
-e:\coding\project3\project1\test.c(282): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(318): warning C4047: 'return': 'char' differs in levels of indirection from 'char [200]'
-e:\coding\project3\project1\test.c(328): warning C4133: 'function': incompatible types - from 'GtkWidget *' to 'GtkTreeView *'
-e:\coding\project3\project1\test.c(341): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(364): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(394): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(414): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'char (*)[200]'
-e:\coding\project3\project1\test.c(424): warning C4133: 'function': incompatible types - from 'GtkDialog *' to 'GtkWidget *'
-e:\coding\project3\project1\test.c(419): warning C4101: 'action': unreferenced local variable
-  Generating code
-e:\coding\project3\project1\test.c(430): warning C4716: 'pop_up': must return a value
-e:\coding\project3\project1\test.c(272): warning C4715: 'add_data_to_sql': not all control paths return a value
-  3 of 21 functions (14.3%) were compiled, the rest were copied from previous compilation.
+﻿  Generating code
+  0 of 23 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Project1.vcxproj -> E:\Coding\Project3\Project1\x64\Release\Project1.exe
