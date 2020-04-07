@@ -47,6 +47,7 @@ int callback3(void *notused, int argc, char**argv, char**colname);
 int add_sum_to_sql();
 void delete_summary_from_sql();
 int pop_up();
+int keypress_listener(GtkWidget *button, GdkEventKey *event);
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv);
 	hideconsole();
@@ -165,6 +166,10 @@ static void load_ui(void) {
 	gtk_entry_set_placeholder_text(GTK_ENTRY(income), "Incomes");
 	gtk_entry_set_placeholder_text(GTK_ENTRY(expense), "Expenses");
 	gtk_entry_set_placeholder_text(GTK_ENTRY(note), "Notes");
+
+	g_signal_connect(income, "key-press-event", G_CALLBACK(keypress_listener), NULL);
+	g_signal_connect(expense, "key-press-event", G_CALLBACK(keypress_listener), NULL);
+	g_signal_connect(note, "key-press-event", G_CALLBACK(keypress_listener), NULL);
 
 	gtk_layout_put(GTK_LAYOUT(layout), income, 320, 315);
 	gtk_layout_put(GTK_LAYOUT(layout), expense, 320, 365);
@@ -472,4 +477,14 @@ int hideconsole(){
 	HWND hwnd = GetConsoleWindow();
 	//ShowWindow(hwnd, SW_MINIMIZE);
 	ShowWindow(hwnd, SW_HIDE);
+}
+int keypress_listener(GtkWidget *button, GdkEventKey *event) {
+	char a[100];
+	snprintf(a, sizeof(a), "%s", gdk_keyval_name(event->keyval));
+	if (event != NULL && !(strcmp(a, "Return"))) {
+		add_data_to_sql();
+	}
+	else {
+		return 0;
+	}
 }
