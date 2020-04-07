@@ -10,7 +10,9 @@ label#note_label {
     color: salmon;
     font-size: 20px;
 }
-
+#main_window{
+    color:red
+}
 
 
 

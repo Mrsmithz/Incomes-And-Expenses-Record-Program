@@ -17,6 +17,7 @@ GdkPixbuf *icon;
 int count = 0;
 char test[100];
 double summaryall = 0;
+static const char *database = "Database.db";
 enum
 {
 	dates = 0,
@@ -86,7 +87,7 @@ static GtkWidget *create_tree_view(void) {
 	col3 = gtk_tree_view_column_new();
 	col4 = gtk_tree_view_column_new();
 	col5 = gtk_tree_view_column_new();
-	
+
 	gtk_tree_view_column_set_title(col1, "Dates");
 	gtk_tree_view_column_set_title(col2, "Notes");
 	gtk_tree_view_column_set_title(col3, "Incomes");
@@ -110,7 +111,7 @@ static GtkWidget *create_tree_view(void) {
 	cell3 = gtk_cell_renderer_text_new();
 	cell4 = gtk_cell_renderer_text_new();
 	cell5 = gtk_cell_renderer_text_new();
-	
+
 	gtk_tree_view_column_pack_start(col1, cell1, TRUE);
 	gtk_tree_view_column_pack_start(col2, cell2, TRUE);
 	gtk_tree_view_column_pack_start(col3, cell3, TRUE);
@@ -147,12 +148,16 @@ static void load_ui(void) {
 
 	gtk_layout_put(GTK_LAYOUT(layout), income_label, 230, 315);
 	gtk_layout_put(GTK_LAYOUT(layout), expense_label, 225, 365);
-	gtk_layout_put(GTK_LAYOUT(layout), note_label, 230, 430);
+	gtk_layout_put(GTK_LAYOUT(layout), note_label, 240, 430);
 
 	income = gtk_entry_new();
 	expense = gtk_entry_new();
 	note = gtk_entry_new();
-
+	
+	gtk_widget_set_name(income, "income_input");
+	gtk_widget_set_name(expense, "expense_input");
+	gtk_widget_set_name(note, "note_input");
+	
 	gtk_widget_set_size_request(GTK_ENTRY(income), 400, 50);
 	gtk_widget_set_size_request(GTK_ENTRY(expense), 400, 50);
 	gtk_widget_set_size_request(GTK_ENTRY(note), 400, 100);
@@ -181,6 +186,10 @@ static void load_ui(void) {
 	g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_sum_from_sql), NULL);
 	//g_signal_connect(sum_btn, "clicked", G_CALLBACK(get_data_from_tree_view), NULL);
 
+	gtk_widget_set_name(submit_btn, "submit_btn");
+	gtk_widget_set_name(delete_btn, "delete_btn");
+	gtk_widget_set_name(sum_btn, "sum_btn");
+
 	calendar = gtk_calendar_new();
 	gtk_widget_set_size_request(GTK_CALENDAR(calendar), 200, 100);
 	gtk_layout_put(GTK_LAYOUT(layout), GTK_CALENDAR(calendar), 10, 315);
@@ -191,13 +200,16 @@ static void load_ui(void) {
 	gtk_layout_put(GTK_LAYOUT(layout), scroll, 10, 10);
 
 	treeview = create_tree_view();
+	gtk_tree_view_set_enable_search(treeview, FALSE);
 	gtk_widget_set_size_request(GTK_TREE_VIEW(treeview), 770, 300);
 	gtk_container_add(GTK_SCROLLED_WINDOW(scroll), treeview);
+
+	gtk_widget_set_name(treeview, "treeview");
 }
 static void load_css(void) {
 	GtkCssProvider *css;
 	css = gtk_css_provider_new();
-	gtk_css_provider_load_from_path(css, "theme.css", NULL);
+	gtk_css_provider_load_from_path(css, "share/theme.css", NULL);
 	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),GTK_STYLE_PROVIDER(css),GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 /*static void add_data(void) {
@@ -227,7 +239,7 @@ static void create_sql(void) {
 	snprintf(date_format, sizeof(date_format), "CREATE TABLE IF NOT EXISTS \"%02d/%02d/%04d\" (notes TEXT, incomes TEXT, expenses TEXT, result TEXT);", day, month + 1, year);
 	snprintf(check, sizeof(check), "SELECT name FROM sqlite_master WHERE type='table' AND name=\"%02d/%02d/%04d\"", day, month + 1, year);
 	snprintf(check2, sizeof(check2), "%02d/%02d/%04d", day, month + 1, year);
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
 	char *sql2 = &check;
 	rc = sqlite3_exec(db, sql2, callback2, 0, &err_msg);
@@ -272,7 +284,7 @@ int add_data_to_sql(void) {
 	snprintf(d, sizeof(d), "%.2lf", expense_value);
 	snprintf(result, sizeof(result), "%.2lf", (income_value - expense_value));
 	
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
 	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
 	
@@ -295,7 +307,7 @@ int get_data_from_sql() {
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "SELECT * FROM \"%02d/%02d/%04d\"", day, month + 1, year);
 
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 
 	char *sql = &date_format;
 
@@ -355,7 +367,7 @@ int delete_row() {
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	//snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?;", day, month + 1, year);
 	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE rowid in (select min(rowid) from \"%02d/%02d/%04d\" WHERE notes=? AND incomes=? AND expenses=? AND result=?);", day, month + 1, year, day, month+1, year);
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
 	printf("%s\n", sql);
 
@@ -378,7 +390,7 @@ int get_sum_from_sql() {
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "SELECT incomes, expenses FROM \"%02d/%02d/%04d\" where notes!='Summary'", day, month + 1, year);
 
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 
 	char *sql = &date_format;
 
@@ -409,7 +421,7 @@ int add_sum_to_sql() {
 	snprintf(c, sizeof(c), "%s", "-");
 	snprintf(d, sizeof(d), "%s", "-");
 
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
 	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
 
@@ -429,7 +441,7 @@ void delete_summary_from_sql() {
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes='Summary'", day, month+1, year);
 	printf("%s", date_format);
-	int rc = sqlite3_open("test.db", &db);
+	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
 	rc = sqlite3_exec(db, sql, NULL, 0, &err_msg);
 
