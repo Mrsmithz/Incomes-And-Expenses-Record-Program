@@ -17,6 +17,8 @@ GdkPixbuf *icon;
 int count = 0;
 char test[100];
 double summaryall = 0;
+double expenseall = 0;
+double incomeall = 0;
 static const char *database = "Database.db";
 enum
 {
@@ -407,9 +409,11 @@ int callback3(void*notused, int argc, char**argv, char**colname){
 	for (int i = 0; i < argc; i++) {
 		if (!strcmp(colname[i], "incomes")) {
 			summaryall += atof(argv[i]);
+			incomeall += atof(argv[i]);
 		}
 		else {
 			summaryall -= atof(argv[i]);
+			expenseall += atof(argv[i]);
 		}
 	}
 	return 0;
@@ -423,8 +427,8 @@ int add_sum_to_sql() {
 	char a[100], b[100], c[100], d[100];
 	snprintf(a, sizeof(a), "%.2lf", summaryall);
 	snprintf(b, sizeof(b), "%s", "Summary");
-	snprintf(c, sizeof(c), "%s", "-");
-	snprintf(d, sizeof(d), "%s", "-");
+	snprintf(c, sizeof(c), "%.2lf", incomeall);
+	snprintf(d, sizeof(d), "%.2lf", expenseall);
 
 	int rc = sqlite3_open(database, &db);
 	char *sql = &date_format;
@@ -438,6 +442,8 @@ int add_sum_to_sql() {
 	printf("%s", sql);
 	int step = sqlite3_step(statement);
 	summaryall = 0;
+	expenseall = 0;
+	incomeall = 0;
 	get_data_from_sql();
 }
 void delete_summary_from_sql() {
