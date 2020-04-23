@@ -98,7 +98,7 @@ int add_data_to_sql(void) {
 	}
 ```
 
-```C
+```markdown
 int delete_row() {
 	GtkTreeSelection *select;
 	char *note_select = NULL, *income_select = NULL, *expense_select = NULL, *summary_select = NULL;
@@ -110,7 +110,7 @@ int delete_row() {
 	}
 ```
 
-```C
+```markdown
 void delete_summary_from_sql() {
 	unsigned int day, month, year;
 	char date_format[200];
