@@ -71,7 +71,7 @@ The program devide to 3 parts
 
 ### Source Code
 
-```C
+{% highlight c %}
 int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
@@ -96,7 +96,7 @@ int add_data_to_sql(void) {
 	else {
 		printf("Passed\n");
 	}
-```
+{% endhighlight %}
 
 ```C
 int delete_row() {
