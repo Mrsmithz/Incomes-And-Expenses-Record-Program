@@ -72,52 +72,6 @@ The program devide to 3 parts
 ### Source Code
 
 ```markdown
-int main(){
-    list* head = NULL;
-    head=malloc(sizeof(list));
-    if (head==NULL) {
-       return 0;
-    }
-    int num1, temp;
-    scanf("%d",&num1);
-    list * list_current=head;
-    for (int i=0;i<num1;i++) {
-      scanf("%d",&temp);
-      list_current->num=temp;
-      if (i!=num1-1) {
-        list_current->next=malloc(sizeof(list));
-        list_current = list_current->next;
-        }
-      else {
-          list_current->next=NULL;
-        }
-    }
-
-    struct list *new_node, *list_c=head, *list_pointer, *tmp = head;
-    new_node = (struct list*) malloc(sizeof(list));
-    int position;
-    scanf("%d %d", &position ,&new_node->num);
-
-    if(position==0){
-      new_node -> next=head;
-      list_c = new_node;
-    }
-    else{
-      for (int count = 1; count<position&&list_pointer != NULL ; count++){
-        tmp = tmp->next;}
-        new_node->next = tmp->next;
-        tmp->next = new_node;
-    }
-
-    while (list_c != NULL) {
-        printf("%d ", list_c->num);
-        list_c = list_c->next;
-      }
-  return 0;
-}
-```
-
-```markdown
 int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
