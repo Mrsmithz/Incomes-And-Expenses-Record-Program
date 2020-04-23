@@ -71,7 +71,7 @@ The program devide to 3 parts
 
 ### Source Code
 
-```c
+```C
 int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
