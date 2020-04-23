@@ -1,6 +1,6 @@
-# Income and Expense Record
-# Introduction
-กลุ่มของพวกเราได้ทำการสร้างและพัฒนาโปรแกรมที่ชื่อว่า **Income and Expense Recor** ขึ้นมาเพื่อใช้ในการบันทึกรายรับรายจ่าย เพื่อที่จะได้สามารถเก็บออมเงินและบริหารเงินได้อย่างมีประสิทธิภาพมากที่สุด
+# Income And Expense Record
+## Introduction
+กลุ่มของพวกเราได้ทำการสร้างและพัฒนาโปรแกรมที่ชื่อว่า **Income And Expense Recor** ขึ้นมาเพื่อใช้ในการบันทึกรายรับรายจ่าย เพื่อที่จะได้สามารถจัดการและบริหารเงินได้อย่างมีประสิทธิภาพมากยิ่งขึ้น
 ## How to install
 - โหลด zip file ได้จาก[ที่นี่](https://github.com/Mrsmihz/Incomes-And-Expenses-Record-Program)
 - ทำการแตกไฟล์
@@ -10,10 +10,9 @@
 ## Tutorial
 >link video
 ## Contributors
-| รหัสนักศึกษา | ชื่อ - นามสกุล |
-| --- | --- |
-| 62070067 | ณัฐวัฒน์ สามสี |
-| 62070070 | เดชพนต์ นุ่นเสน |
-| 62070156 | มนัสวี พึ่งสุนทรบัตร์ |
-| 62070166 | วรางคณา สุขพาสน์เจริญ |
-
+| รหัสนักศึกษา | ชื่อ - นามสกุล | Github |
+| --- | --- | --- |
+| 62070067 | ณัฐวัฒน์ สามสี | [kpunazalea](https://github.com/kpunazalea) |
+| 62070070 | เดชพนต์ นุ่นเสน | [Mrsmithz](https://github.com/Mrsmihz) |
+| 62070156 | มนัสวี พึ่งสุนทรบัตร์ | [manussavee](https://github.com/manussavee) |
+| 62070166 | วรางคณา สุขพาสน์เจริญ | [WSBoos](https://github.com/WSBoos) |
