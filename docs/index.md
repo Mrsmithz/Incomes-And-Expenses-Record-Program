@@ -96,8 +96,8 @@ int add_data_to_sql(void) {
 	else {
 		printf("Passed\n");
 	}
-
-
+{% endhighlight %}
+{% highlight c %}
 int delete_row() {
 	GtkTreeSelection *select;
 	char *note_select = NULL, *income_select = NULL, *expense_select = NULL, *summary_select = NULL;
@@ -107,8 +107,8 @@ int delete_row() {
 		gtk_tree_model_get(model, &toplevel, 1, &note_select, 2, &income_select, 3, &expense_select, 4, &summary_select, -1);
 		printf("%s %s %s %s\n", note_select, income_select, expense_select, summary_select);
 	}
-
-
+{% endhighlight %}
+{% highlight c %}
 void delete_summary_from_sql() {
 	unsigned int day, month, year;
 	char date_format[200];
