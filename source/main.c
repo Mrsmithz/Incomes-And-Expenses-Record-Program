@@ -30,15 +30,15 @@ enum
 	cols
 };
 
-static GtkTreeModel *create_model(void);
-static GtkWidget *create_tree_view(void);
+static GtkTreeModel *create_model(void); //The tree interface used by GtkTreeView
+static GtkWidget *create_tree_view(void); //Base class for all widgets
 static void load_ui(void);
 static void load_css(void);
 static void add_data(void);
 static void create_sql(void);
 GdkPixbuf *create_pixbuf(const gchar * filename);
 int add_data_to_sql(void);
-int get_data_from_sql();
+int get_data_from_sql();l
 int callback(void *notused, int argc, char**argv, char**colname);
 char callback2(void *notused, int argc, char**argv, char**colname);
 char get_data_from_tree_view();
@@ -51,21 +51,21 @@ void delete_summary_from_sql();
 int pop_up();
 int keypress_listener(GtkWidget *button, GdkEventKey *event);
 int main(int argc, char**argv) {
-	gtk_init(&argc, &argv);
-	hideconsole();
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
-	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-	gtk_window_set_title(GTK_WINDOW(window), "INCOMES AND EXPENSES RECORDS");
+	gtk_init(&argc, &argv); //Call gtk init before using GTK+
+	hideconsole(); //call function hideconsole
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Creates a new GtkWindow
+	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600); //Sets the default size of a window.
+	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL); //Connects a GCallback function to a signal for a particular object.
+	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);  //Sets whether the user can resize a window. Windows are user resizable by default.
+	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER); //Sets a position constraint for this window.
+	gtk_window_set_title(GTK_WINDOW(window), "INCOMES AND EXPENSES RECORDS"); //program's title
 	icon = create_pixbuf("share/icon/Emo01.png");
-	gtk_window_set_icon(GTK_WINDOW(window), icon);
+	gtk_window_set_icon(GTK_WINDOW(window), icon); //Sets up the icon representing a GtkWindow.
 	layout = gtk_layout_new(NULL, NULL);
-	load_ui();
-	gtk_container_add(GTK_WINDOW(window), layout);
+	load_ui(); //call load ui function
+	gtk_container_add(GTK_WINDOW(window), layout); //Adds widget to container
 	get_data_from_sql();
-	gtk_widget_show_all(window);
+	gtk_widget_show_all(window); //Recursively shows a widget, and any child widgets
 	gtk_main();
 	return 0;
 }
@@ -85,31 +85,31 @@ static GtkWidget *create_tree_view(void) {
 
 	treeview = gtk_tree_view_new();
 
-	col1 = gtk_tree_view_column_new();
+	col1 = gtk_tree_view_column_new(); //create column 1 - 5
 	col2 = gtk_tree_view_column_new();
 	col3 = gtk_tree_view_column_new();
 	col4 = gtk_tree_view_column_new();
 	col5 = gtk_tree_view_column_new();
 
-	gtk_tree_view_column_set_title(col1, "Dates");
+	gtk_tree_view_column_set_title(col1, "Dates"); //Name column 1-5
 	gtk_tree_view_column_set_title(col2, "Notes");
 	gtk_tree_view_column_set_title(col3, "Incomes");
 	gtk_tree_view_column_set_title(col4, "Expenses");
 	gtk_tree_view_column_set_title(col5, "Summary");
 	
-	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col1);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col1); //set column to tree view column 1-5
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col2);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col3);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col4);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col5);
 	
-	gtk_tree_view_column_set_fixed_width(col1, 100);
+	gtk_tree_view_column_set_fixed_width(col1, 100); //Set tree width column 1-5
 	gtk_tree_view_column_set_fixed_width(col2, 350);
 	gtk_tree_view_column_set_fixed_width(col3, 110);
 	gtk_tree_view_column_set_fixed_width(col4, 110);
 	gtk_tree_view_column_set_fixed_width(col5, 110);
 	
-	cell1 = gtk_cell_renderer_text_new();
+	cell1 = gtk_cell_renderer_text_new(); //create cell
 	cell2 = gtk_cell_renderer_text_new();
 	cell3 = gtk_cell_renderer_text_new();
 	cell4 = gtk_cell_renderer_text_new();
@@ -153,15 +153,15 @@ static void load_ui(void) {
 	gtk_layout_put(GTK_LAYOUT(layout), expense_label, 225, 365);
 	gtk_layout_put(GTK_LAYOUT(layout), note_label, 240, 430);
 
-	income = gtk_entry_new();
-	expense = gtk_entry_new();
-	note = gtk_entry_new();
+	income = gtk_entry_new(); //Creates a new entry.
+	expense = gtk_entry_new(); //Creates a new entry.
+	note = gtk_entry_new(); //Creates a new entry.
 	
-	gtk_widget_set_name(income, "income_input");
+	gtk_widget_set_name(income, "income_input"); //refer them from CSS file
 	gtk_widget_set_name(expense, "expense_input");
 	gtk_widget_set_name(note, "note_input");
 	
-	gtk_widget_set_size_request(GTK_ENTRY(income), 400, 50);
+	gtk_widget_set_size_request(GTK_ENTRY(income), 400, 50); 
 	gtk_widget_set_size_request(GTK_ENTRY(expense), 400, 50);
 	gtk_widget_set_size_request(GTK_ENTRY(note), 400, 100);
 
