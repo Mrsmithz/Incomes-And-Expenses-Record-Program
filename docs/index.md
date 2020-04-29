@@ -124,6 +124,9 @@ int add_sum_to_sql();
 void delete_summary_from_sql();
 int pop_up();
 int keypress_listener(GtkWidget *button, GdkEventKey *event);
+{% endhighlight %}
+
+{% highlight c %}
 int main(int argc, char**argv) {
 	gtk_init(&argc, &argv); //Call gtk init before using GTK+
 	hideconsole(); //call function hideconsole
@@ -143,6 +146,9 @@ int main(int argc, char**argv) {
 	gtk_main();
 	return 0;
 }
+{% endhighlight %}
+
+{% highlight c %}
 static GtkTreeModel *create_model(void) {
 
 	treestore = gtk_tree_store_new(cols, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
@@ -207,6 +213,9 @@ static GtkWidget *create_tree_view(void) {
 	
 	return treeview;
 }
+{% endhighlight %}
+
+{% highlight c %}
 static void load_ui(void) {
 	GtkWidget *income_label, *expense_label, *note_label;
 	load_css();
@@ -287,6 +296,9 @@ static void load_ui(void) {
 
 	gtk_widget_set_name(treeview, "treeview");
 }
+{% endhighlight %}
+
+{% highlight c %}
 static void load_css(void) {
 	GtkCssProvider *css;
 	css = gtk_css_provider_new();
@@ -312,7 +324,9 @@ static void load_css(void) {
 sqlite3 *db;
 sqlite3_stmt *statement;
 char *err_msg = 0;
+{% endhighlight %}
 
+{% highlight c %}
 static void create_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200], check[200], check2[100];
@@ -333,6 +347,9 @@ static void create_sql(void) {
 		get_data_from_sql();
 	}
 }
+{% endhighlight %}
+
+{% highlight c %}
 int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
@@ -381,6 +398,9 @@ int add_data_to_sql(void) {
 	gtk_entry_set_text(GTK_ENTRY(income), "");
 	gtk_entry_set_text(GTK_ENTRY(expense), "");
 }
+{% endhighlight %}
+
+{% highlight c %}
 int get_data_from_sql() {
 	gtk_tree_store_clear(treestore);
 	unsigned int day, month, year;
@@ -413,6 +433,9 @@ int callback(void *notused, int argc, char **argv, char **colname) {
 	}
 	return 0;
 }
+{% endhighlight %}
+
+{% highlight c %}
 char get_data_from_tree_view() {
 	GtkTreeIter iter;
 	GtkTreePath *path;
@@ -428,11 +451,15 @@ char get_data_from_tree_view() {
 	printf("%s", buffer);
 	return buffer;
 }
+
 char callback2(void *notused, int argc, char**argv, char**colname) {
 	notused = 0;
 	snprintf(test, sizeof(test), "%s", argv[0]);
 	return 0;
 }
+{% endhighlight %}
+
+{% highlight c %}
 int delete_row() {
 	GtkTreeSelection *select;
 	char *note_select = NULL, *income_select = NULL, *expense_select = NULL, *summary_select = NULL;
@@ -465,6 +492,9 @@ int delete_row() {
 
 	return 0;
 }
+{% endhighlight %}
+
+{% highlight c %}
 int get_sum_from_sql() {
 	unsigned int day, month, year;
 	char date_format[200];
@@ -478,6 +508,9 @@ int get_sum_from_sql() {
 	rc = sqlite3_exec(db, sql, callback3, 0, &err_msg);
 	add_sum_to_sql();
 }
+{% endhighlight %}
+
+{% highlight c %}
 int callback3(void*notused, int argc, char**argv, char**colname){
 	notused = 0;
 	for (int i = 0; i < argc; i++) {
@@ -492,6 +525,9 @@ int callback3(void*notused, int argc, char**argv, char**colname){
 	}
 	return 0;
 }
+{% endhighlight %}
+
+{% highlight c %}
 int add_sum_to_sql() {
 	delete_summary_from_sql();
 	unsigned int day, month, year;
@@ -520,6 +556,9 @@ int add_sum_to_sql() {
 	incomeall = 0;
 	get_data_from_sql();
 }
+{% endhighlight %}
+
+{% highlight c %}
 void delete_summary_from_sql() {
 	unsigned int day, month, year;
 	char date_format[200];
@@ -531,6 +570,9 @@ void delete_summary_from_sql() {
 	rc = sqlite3_exec(db, sql, NULL, 0, &err_msg);
 
 }
+{% endhighlight %}
+
+{% highlight c %}
 int pop_up() {
 	GtkWidget *popup, *dialog_label, *action;
 	GtkDialogFlags flags = GTK_DIALOG_MODAL;
@@ -544,6 +586,9 @@ int pop_up() {
 		gtk_widget_destroy(popup);
 	}
 }
+{% endhighlight %}
+
+{% highlight c %}
 GdkPixbuf *create_pixbuf(const gchar *filename) {
 	GdkPixbuf *pixbuf;
 	GError *error = NULL;
