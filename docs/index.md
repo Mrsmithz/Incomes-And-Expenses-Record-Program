@@ -72,36 +72,6 @@ The program devide to 3 parts
 ### Source Code
 
 {% highlight c %}
-Skip to content
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@WSBoos 
-Learn Git and GitHub without any code!
-Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
-
-
-Mrsmihz
-/
-Incomes-And-Expenses-Record-Program
-1
-00
- Code
- Issues 0
- Pull requests 0 Actions
- Projects 0
- Wiki
- Security 0
- Insights
-Incomes-And-Expenses-Record-Program/source/main.c
-@kpunazalea kpunazalea Comment
-55ddd81 4 days ago
-496 lines (438 sloc)  18.7 KB
-  
 #include <stdio.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -179,6 +149,7 @@ static GtkTreeModel *create_model(void) {
 
 	/*gtk_tree_store_append(treestore, &toplevel, NULL);
 	gtk_tree_store_set(treestore, &toplevel, 0, "Faith", 1, "FAITH2", -1);
+
 	gtk_tree_store_append(treestore, &toplevel, NULL);
 	gtk_tree_store_set(treestore, &toplevel, 0, "Faith1", 1, "FAITH3", -1);*/
 
