@@ -248,7 +248,7 @@ char *err_msg = 0;
 static void create_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200], check[200], check2[100];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Obtains the selected date from a GtkCalendar
 	snprintf(date_format, sizeof(date_format), "CREATE TABLE IF NOT EXISTS \"%02d/%02d/%04d\" (notes TEXT, incomes TEXT, expenses TEXT, result TEXT);", day, month + 1, year);
 	snprintf(check, sizeof(check), "SELECT name FROM sqlite_master WHERE type='table' AND name=\"%02d/%02d/%04d\"", day, month + 1, year);
 	snprintf(check2, sizeof(check2), "%02d/%02d/%04d", day, month + 1, year);
@@ -269,7 +269,7 @@ static void create_sql(void) {
 int add_data_to_sql(void) {
 	unsigned int day, month, year;
 	char date_format[200];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Obtains the selected date from a GtkCalendar
 	snprintf(date_format, sizeof(date_format), "INSERT INTO \"%02d/%02d/%04d\" VALUES (?, ?, ?, ?);", day, month + 1, year);
 	char a[100], b[100], c[100], d[100], result[100], check1[100], check2[100];
 	double income_value, expense_value;
@@ -319,7 +319,7 @@ int get_data_from_sql() {
 	gtk_tree_store_clear(treestore); //Removes all rows from treestore
 	unsigned int day, month, year;
 	char date_format[200];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Creates a calendar object that displays the current month and year with the current day selected
 	snprintf(date_format, sizeof(date_format), "SELECT * FROM \"%02d/%02d/%04d\"", day, month + 1, year);
 
 	int rc = sqlite3_open(database, &db);
@@ -332,7 +332,7 @@ int get_data_from_sql() {
 int callback(void *notused, int argc, char **argv, char **colname) {
 	unsigned int day, month, year;
 	char date_format[200];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Obtains the selected date from a GtkCalendar
 	snprintf(date_format, sizeof(date_format), "%02d/%02d/%04d", day, month + 1, year);
 
 	notused = 0;
@@ -341,10 +341,10 @@ int callback(void *notused, int argc, char **argv, char **colname) {
 	//snprintf(buffer, sizeof(buffer), "%s%s%s%s", argv[0], argv[1], argv[2], argv[3]);
 	//printf("%s\n", buffer);
 	gtk_tree_store_append(treestore, &toplevel, NULL); //Appends a new row to treestore
-	gtk_tree_store_set(treestore, &toplevel, 0, date_format, -1); //Sets the value of one or more cells in the row referenced by iter
+	gtk_tree_store_set(treestore, &toplevel, 0, date_format, -1); //Sets the value of cells in the row referenced by iter
 
 	for (int i = 0; i < argc; i++) {
-		gtk_tree_store_set(treestore, &toplevel, i+1, argv[i], -1);
+		gtk_tree_store_set(treestore, &toplevel, i+1, argv[i], -1); //Sets the value of cells in the row referenced by iter
 	}
 	return 0;
 }
@@ -392,7 +392,7 @@ int delete_row() {
 
 	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
 
-	sqlite3_bind_text(statement, 1, note_select, -1, 0);
+	sqlite3_bind_text(statement, 1, note_select, -1, 0); //Store application data into parameters of the original SQL
 	sqlite3_bind_text(statement, 2, income_select, -1, 0);
 	sqlite3_bind_text(statement, 3, expense_select, -1, 0);
 	sqlite3_bind_text(statement, 4, summary_select, -1, 0);
@@ -410,7 +410,7 @@ int get_sum_from_sql() {
 	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
 	snprintf(date_format, sizeof(date_format), "SELECT incomes, expenses FROM \"%02d/%02d/%04d\" where notes!='Summary'", day, month + 1, year);
 
-	int rc = sqlite3_open(database, &db);
+	int rc = sqlite3_open(database, &db); //Open a connection to a new or existing SQLite database
 
 	char *sql = &date_format;
 
@@ -437,7 +437,7 @@ int add_sum_to_sql() {
 	delete_summary_from_sql();
 	unsigned int day, month, year;
 	char date_format[200];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Obtains the selected date from a GtkCalendar
 	snprintf(date_format, sizeof(date_format), "INSERT INTO \"%02d/%02d/%04d\" VALUES (?, ?, ?, ?);", day, month + 1, year);
 	char a[100], b[100], c[100], d[100];
 	snprintf(a, sizeof(a), "%.2lf", summaryall);
@@ -449,13 +449,13 @@ int add_sum_to_sql() {
 	char *sql = &date_format;
 	rc = sqlite3_prepare_v2(db, sql, -1, &statement, 0);
 
-	sqlite3_bind_text(statement, 1, b, -1, 0);
+	sqlite3_bind_text(statement, 1, b, -1, 0); //Store application data into parameters of the original SQL
 	sqlite3_bind_text(statement, 2, c, -1, 0);
 	sqlite3_bind_text(statement, 3, d, -1, 0);
 	sqlite3_bind_text(statement, 4, a, -1, 0);
 
 	printf("%s", sql);
-	int step = sqlite3_step(statement);
+	int step = sqlite3_step(statement); //Advance an sqlite3_stmt to the next result row or to completion
 	summaryall = 0;
 	expenseall = 0;
 	incomeall = 0;
@@ -465,12 +465,12 @@ int add_sum_to_sql() {
 void delete_summary_from_sql() {
 	unsigned int day, month, year;
 	char date_format[200];
-	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day);
+	gtk_calendar_get_date(GTK_CALENDAR(calendar), &year, &month, &day); //Obtains the selected date from a GtkCalendar
 	snprintf(date_format, sizeof(date_format), "DELETE FROM \"%02d/%02d/%04d\" WHERE notes='Summary'", day, month+1, year);
 	printf("%s", date_format);
-	int rc = sqlite3_open(database, &db);
+	int rc = sqlite3_open(database, &db); //Open a connection to a new or existing SQLite database
 	char *sql = &date_format;
-	rc = sqlite3_exec(db, sql, NULL, 0, &err_msg);
+	rc = sqlite3_exec(db, sql, NULL, 0, &err_msg); //A wrapper function that does sqlite3_prepare(), sqlite3_step(), sqlite3_column(), and sqlite3_finalize() for a string of SQL statements
 }
 
 int pop_up() {
