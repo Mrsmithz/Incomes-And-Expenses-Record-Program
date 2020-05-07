@@ -8,7 +8,7 @@
 
 ![Image](https://i.imgur.com/M5vFe9C.gif)
 ## Tutorial
->link video
+[![Watch the video](https://i.imgur.com/bcBki4Z.png?1)](https://youtu.be/8nu9NL6X660)
 ## Contributors
 | รหัสนักศึกษา | ชื่อ - นามสกุล | Github |
 | --- | --- | --- |
